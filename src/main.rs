@@ -7,7 +7,7 @@ struct Position {
     y: Size,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 enum Orientation {
     North,
     East,
@@ -27,6 +27,27 @@ impl Robot {
             position: position,
             orientation: orientation,
             beepers: beepers
+        }
+    }
+    
+    fn set_position(&mut self, position: Position) {
+        self.position = position;
+    }
+    
+    fn add_beeper(&mut self) {
+        self.beepers += 1;
+    }
+    
+    fn remove_beeper(&mut self) {
+        self.beepers -= 1;
+    }
+    
+    fn turn_left(&mut self) {
+        self.orientation = match self.orientation {
+            Orientation::North => Orientation::West,
+            Orientation::East => Orientation::North,
+            Orientation::South => Orientation::East,
+            Orientation::West => Orientation::South,
         }
     }
 }
@@ -58,25 +79,25 @@ impl World {
     }
     
     fn render(&self) -> String {
-        let mut renderedWorld = String::new();
+        let mut rendered_world = String::new();
         
         for (index, tile) in self.tiles.iter().enumerate() {            
             if index as u32  % self.width == 0 { 
-                renderedWorld.push_str("\n");
+                rendered_world.push_str("\n");
             }
             
-            renderedWorld.push_str(" ");
-            renderedWorld.push_str(&self.render_tile(tile));
+            rendered_world.push_str(" ");
+            rendered_world.push_str(&self.render_tile(tile));
         }
         
-        renderedWorld
+        rendered_world
     }
     
-    fn render_tile(& self, tile: &Tile) -> String {
+    fn render_tile(&self, tile: &Tile) -> String {
         match *tile {
-            Tile::Empty => "E".to_string(),
+            Tile::Empty => ".".to_string(),
             Tile::Wall => "W".to_string(),
-            Tile::Beepers(quantity) => quantity.to_string(),
+            Tile::Beepers(_) => "*".to_string(),
             Tile::Robot(ref orientation) => self.render_orientation(orientation), 
         }
     }
@@ -89,32 +110,24 @@ impl World {
             Orientation::West => "<".to_string(),
         }
     }
+    
+    fn project_robot(&mut self) {
+        let index = compute_index(&self.karel.position, self.width) as usize;
+        self.tiles[index] = Tile::Robot(self.karel.orientation); 
+    }
 }
 
-fn main() {
-    let pos = Position {x: 0, y: 0};
-    let karel = Robot::new(pos, Orientation::North, 0);
-    
-    const HEIGHT:Size = 5;
-    const WIDTH:Size = 5;
-    
-    let mut tiles = vec![Tile::Empty; (HEIGHT * WIDTH) as usize];
-    tiles[10] = Tile::Robot(Orientation::East);
-    
-    let world = World::new(HEIGHT, WIDTH, karel, tiles);
-    
-    println!("World: {}", world.render());
-}
 
 /* 
     indexing Tile in vector will be done like this:
     
-    0 0 1 2 3 4 X
-    0 B B B B B 
-    1 B W W B B 
-    2 B B > B B 
-    3 B B B B B 
-    4 B B B B B 
+       0 1 2 3 4 X
+    
+    0  B B B B B 
+    1  B W W B B 
+    2  B B > B B 
+    3  B B B B B 
+    4  B B B B B 
     Y
     
     karel is on (2, 2)
@@ -122,3 +135,31 @@ fn main() {
     pos = (y * width + x) 
     11 = 2 * 5 + 1
 */
+fn compute_index(position: &Position, width: Size) -> Size {
+    (position.y * width + position.x)
+}
+
+fn main() {
+    const HEIGHT:Size = 5;
+    const WIDTH:Size = 5;
+    
+    let pos = Position {x: 3, y: 2};
+    let mut karel = Robot::new(pos, Orientation::North, 5);
+    karel.turn_left();
+    
+    let mut tiles = vec![Tile::Empty; (HEIGHT * WIDTH) as usize];
+    tiles[compute_index(&Position {x: 1, y: 2}, WIDTH) as usize] = Tile::Wall;
+    tiles[compute_index(&Position {x: 1, y: 1}, WIDTH) as usize] = Tile::Beepers(2); 
+    
+    let mut world = World::new(HEIGHT, WIDTH, karel, tiles);
+    world.project_robot();
+    
+    println!("Karel: ({}, {}), {:?}, Beepers: {}", 
+        world.karel.position.x, 
+        world.karel.position.y,
+        world.karel.orientation,
+        world.karel.beepers.to_string()
+    );
+    
+    println!("{}", world.render());
+}
