@@ -1,12 +1,28 @@
 use helpers::Size;
 use helpers::Position;
 
+use std::str::FromStr;
+
 #[derive(Clone, Copy, Debug)]
 pub enum Orientation {
     North,
     East,
     South,
     West,
+}
+
+impl FromStr for Orientation {
+    type Err = String;
+    
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "north" => Ok(Orientation::North),
+            "east" => Ok(Orientation::East),
+            "south" => Ok(Orientation::South),
+            "west" => Ok(Orientation::West),
+            _ => Err("Error Parsing Orientation".to_owned()),
+        }
+    }
 }
 
 pub struct Robot {

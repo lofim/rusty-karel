@@ -1,0 +1,10 @@
+size 5 5
+
+karel 2 3 East 6
+
+beeper 1 1 2
+beeper 1 2 1
+
+wall 2 2
+wall 2 3
+wall 2 4

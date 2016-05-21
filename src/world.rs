@@ -15,16 +15,61 @@ pub enum Tile {
 
 pub struct World {
     karel: Robot,
-    height: Size,
+    heigth: Size,
     width: Size,
     tiles: Vec<Tile>
 }
 
+pub struct WorldBuilder {
+    karel: Option<Robot>,
+    heigth: Size,
+    width: Size,
+    tiles: Vec<Tile>
+}
+
+impl WorldBuilder {
+    pub fn new() -> WorldBuilder {
+        WorldBuilder {
+            karel: None,
+            width: 0,
+            heigth: 0,
+            tiles: Vec::new()
+        } 
+    }
+    
+    pub fn dimensions<'a>(&'a mut self, width: Size, heigth: Size) -> &'a mut WorldBuilder {
+        self.heigth = heigth;
+        self.width = width;
+        
+        self
+    }
+    
+    pub fn karel<'a>(&'a mut self, karel: Robot) -> &'a mut WorldBuilder {
+        self.karel = Some(karel);
+        
+        self
+    }
+    
+    pub fn tile<'a>(&'a mut self, tile: Tile) -> &'a mut WorldBuilder {
+        self.tiles.push(tile);
+        
+        self
+    }
+    
+    pub fn build(self) -> World {
+        // TODO handle error states
+        // e.g. parsing values validation
+        // required lines must be present and valid
+        World::new(self.width, self.heigth, self.karel.unwrap(), self.tiles)
+    }
+}
+
 impl World {
-    pub fn new(height: Size, width: Size, karel: Robot, tiles: Vec<Tile>) -> World {
+    pub fn new(width: Size, heigth: Size, karel: Robot, tiles: Vec<Tile>) -> World {
+        
         World {
-            height: height,
-            width: width,
+            heigth: width,
+            width: heigth,
             karel: karel,
             tiles: tiles
         }
@@ -66,11 +111,11 @@ impl World {
     pub fn project_robot(&mut self) {
         let (position, orientation, _) = self.karel.info();
         let index = compute_index(&position, self.width) as usize;
-        self.tiles[index] = Tile::Robot(orientation); 
+        self.tiles[index] = Tile::Robot(orientation);
     }
     
     pub fn dimensions(&self) -> (Size, Size) {
-        (self.width, self.height)
+        (self.width, self.heigth)
     }
     
     pub fn get_robot(&self) -> &Robot {

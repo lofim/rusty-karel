@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate text_io;
+
 mod helpers;
 mod robot;
 mod world;
@@ -5,33 +8,49 @@ mod world;
 use helpers::Size;
 use helpers::Position;
 use helpers::compute_index;
+use helpers::load_file;
+use helpers::parse_size_line;
+use helpers::parse_karel_line;
 
 use robot::Robot;
 use robot::Orientation;
 
 use world::World;
 use world::Tile;
+use world::WorldBuilder;
 
 fn main() {
-    const HEIGHT:Size = 5;
-    const WIDTH:Size = 5;
     
-    let pos = Position::new(3, 2);
-    let mut karel = Robot::new(pos, Orientation::North, 5);
-    karel.turn_left();
+    let mut world_builder = WorldBuilder::new();
     
-    let mut tiles = vec![Tile::Empty; (HEIGHT * WIDTH) as usize];
-    tiles[compute_index(&Position::new(1, 2), WIDTH) as usize] = Tile::Wall;
-    tiles[compute_index(&Position::new(1, 1), WIDTH) as usize] = Tile::Beepers(2); 
+    let world_config = load_file("world.kr").unwrap();
+    let lines = world_config.lines();
     
-    let mut world = World::new(HEIGHT, WIDTH, karel, tiles);
-    world.project_robot();
+    // parsing config file - building world
+    for line in lines {
+        if line.starts_with("size") {
+            let (width, heigth) = parse_size_line(line).unwrap();
+            world_builder.dimensions(width, heigth);
+        }
+        
+        if line.starts_with("karel") {
+            let karel = parse_karel_line(line).unwrap();
+            println!("karel stuf");
+            world_builder.karel(karel);
+        }
+        
+        if line.starts_with("beeper") {
+            // world = parse_beeper_line(line).unwrap();
+        }
+        
+        if line.starts_with("wall") {
+            // world = parse_wall_line(line).unwrap();
+        }
+    }
     
-    let (position, orientation, beepers) = world.get_robot().info();
-    let (x, y) = position.extract();
-    println!("Karel: ({}, {}), {:?}, Beepers: {}", 
-        x, y, orientation, beepers.to_string()
-    );
+    let world = world_builder.build();
     
-    println!("{}", world.render());
+    println!("size {:?}", world.dimensions());
+    println!("karel info {:?}", world.get_robot().info());
+    println!("tiles {:?}", world.render());
 }
