@@ -154,25 +154,52 @@ pub fn parse_karel_line(line: &str) -> Result<Robot, String> {
     Ok(Robot::new(Position::new(x, y), orientation, beepers))
 }
 
-pub fn parse_beeper_line(line: &str) -> Result<Tile, String> {
-    // let mut line_tokens = line.split_whitespace();
+pub fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
+    let mut line_tokens = line.split_whitespace();
     
-    // line_tokens.next();
+    line_tokens.next();
     
-    // let x = try!(
-    //     line_tokens.next()
-    //         .ok_or("Error parsing object's x position".to_string())
-    //         .and_then(parse_integer)
-    // );
+    let x = try!(
+        line_tokens.next()
+            .ok_or("Error parsing beeper's x position".to_string())
+            .and_then(parse_integer)
+    );
             
-    // let y = try!(
-    //     line_tokens.next()
-    //         .ok_or("Error parsing object's y position".to_string())
-    //         .and_then(parse_integer)
-    // );
-    unimplemented!();
+    let y = try!(
+        line_tokens.next()
+            .ok_or("Error parsing beeper's y position".to_string())
+            .and_then(parse_integer)
+    );
+    
+    let quantity = try!(
+        line_tokens.next()
+            .ok_or("Error parsing beeper's quantity".to_string())
+            .and_then(parse_integer)
+    );
+    
+    let beeper_tile = Tile::Beepers(quantity);
+    
+    Ok((Position::new(x, y), beeper_tile))
 }
 
-pub fn parse_wall_line(line: &str) -> Result<Tile, String> {
-    unimplemented!();
+pub fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
+    let mut line_tokens = line.split_whitespace();
+    
+    line_tokens.next();
+    
+    let x = try!(
+        line_tokens.next()
+            .ok_or("Error parsing wall's x position".to_string())
+            .and_then(parse_integer)
+    );
+            
+    let y = try!(
+        line_tokens.next()
+            .ok_or("Error parsing wall's y position".to_string())
+            .and_then(parse_integer)
+    );
+    
+    let wall_tile = Tile::Wall;
+    
+    Ok((Position::new(x, y), wall_tile))
 }

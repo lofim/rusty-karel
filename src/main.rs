@@ -5,18 +5,13 @@ mod helpers;
 mod robot;
 mod world;
 
-use helpers::Size;
-use helpers::Position;
-use helpers::compute_index;
 use helpers::load_file;
+
 use helpers::parse_size_line;
 use helpers::parse_karel_line;
+use helpers::parse_beeper_line;
+use helpers::parse_wall_line;
 
-use robot::Robot;
-use robot::Orientation;
-
-use world::World;
-use world::Tile;
 use world::WorldBuilder;
 
 fn main() {
@@ -40,17 +35,20 @@ fn main() {
         }
         
         if line.starts_with("beeper") {
-            // world = parse_beeper_line(line).unwrap();
+            let (position, beeper) = parse_beeper_line(line).unwrap(); 
+            world_builder.tile(position, beeper);
         }
         
         if line.starts_with("wall") {
-            // world = parse_wall_line(line).unwrap();
+            let (position, wall) = parse_wall_line(line).unwrap();
+            world_builder.tile(position, wall);
         }
     }
     
-    let world = world_builder.build();
+    let mut world = world_builder.build();
     
     println!("size {:?}", world.dimensions());
     println!("karel info {:?}", world.get_robot().info());
-    println!("tiles {:?}", world.render());
+    world.project_robot();
+    println!("tiles {}", world.render());
 }

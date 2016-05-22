@@ -1,5 +1,6 @@
 use helpers::Size;
 use helpers::compute_index;
+use helpers::Position;
 
 use robot::Orientation;
 use robot::Robot;
@@ -41,6 +42,8 @@ impl WorldBuilder {
         self.heigth = heigth;
         self.width = width;
         
+        self.tiles = vec![Tile::Empty; heigth as usize * width as usize];
+        
         self
     }
     
@@ -50,8 +53,11 @@ impl WorldBuilder {
         self
     }
     
-    pub fn tile<'a>(&'a mut self, tile: Tile) -> &'a mut WorldBuilder {
-        self.tiles.push(tile);
+    pub fn tile<'a>(&'a mut self, position: Position, tile: Tile) -> &'a mut WorldBuilder {
+        let tile_index = compute_index(&position, self.width) as usize;
+        
+        // handle the loaded content colision here
+        self.tiles[tile_index] = tile;
         
         self
     }

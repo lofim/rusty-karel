@@ -1,6 +1,6 @@
 size 5 5
 
-karel 2 3 East 6
+karel 4 4 East 6
 
 beeper 1 1 2
 beeper 1 2 1
