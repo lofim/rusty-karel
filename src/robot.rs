@@ -40,18 +40,22 @@ impl Robot {
         }
     }
     
+    #[allow(dead_code)]
     pub fn set_position(&mut self, position: Position) {
         self.position = position;
     }
     
+    #[allow(dead_code)]
     pub fn add_beeper(&mut self) {
         self.beepers += 1;
     }
     
+    #[allow(dead_code)]
     pub fn remove_beeper(&mut self) {
         self.beepers -= 1;
     }
     
+    #[allow(dead_code)]
     pub fn turn_left(&mut self) {
         self.orientation = match self.orientation {
             Orientation::North => Orientation::West,

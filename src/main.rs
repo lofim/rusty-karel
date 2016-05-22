@@ -4,15 +4,17 @@ extern crate text_io;
 mod helpers;
 mod robot;
 mod world;
+mod plain_file_parser;
+mod world_builder;
 
 use helpers::load_file;
 
-use helpers::parse_size_line;
-use helpers::parse_karel_line;
-use helpers::parse_beeper_line;
-use helpers::parse_wall_line;
+use plain_file_parser::parse_size_line;
+use plain_file_parser::parse_karel_line;
+use plain_file_parser::parse_beeper_line;
+use plain_file_parser::parse_wall_line;
 
-use world::WorldBuilder;
+use world_builder::WorldBuilder;
 
 fn main() {
     
