@@ -13,7 +13,7 @@ pub enum Orientation {
 
 impl FromStr for Orientation {
     type Err = String;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "north" => Ok(Orientation::North),
@@ -39,23 +39,24 @@ impl Robot {
             beepers: beepers
         }
     }
-    
+
     #[allow(dead_code)]
     pub fn set_position(&mut self, position: Position) {
         self.position = position;
     }
-    
+
     #[allow(dead_code)]
     pub fn add_beeper(&mut self) {
+        // this need to be rewritten using checked_add
         self.beepers += 1;
     }
-    
+
     #[allow(dead_code)]
     pub fn remove_beeper(&mut self) {
+        // This needs to be rewritten using checked_sub
         self.beepers -= 1;
     }
-    
-    #[allow(dead_code)]
+
     pub fn turn_left(&mut self) {
         self.orientation = match self.orientation {
             Orientation::North => Orientation::West,
@@ -64,7 +65,7 @@ impl Robot {
             Orientation::West => Orientation::South,
         }
     }
-    
+
     pub fn info(&self) -> (Position, Orientation, Size) {
         (self.position, self.orientation, self.beepers)
     }
