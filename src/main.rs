@@ -1,15 +1,16 @@
 mod helpers;
 mod robot;
 mod world;
-mod plain_file_parser;
+mod plain_world_parser;
 mod world_builder;
+mod program;
 
 use helpers::load_file;
 
-use plain_file_parser::parse_size_line;
-use plain_file_parser::parse_karel_line;
-use plain_file_parser::parse_beeper_line;
-use plain_file_parser::parse_wall_line;
+use plain_world_parser::parse_size_line;
+use plain_world_parser::parse_karel_line;
+use plain_world_parser::parse_beeper_line;
+use plain_world_parser::parse_wall_line;
 
 use world_builder::WorldBuilder;
 
