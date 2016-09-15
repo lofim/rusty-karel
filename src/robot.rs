@@ -46,24 +46,30 @@ impl Robot {
     }
 
     #[allow(dead_code)]
-    pub fn add_beeper(&mut self) {
+    pub fn add_beeper(&mut self) -> bool{
         // this need to be rewritten using checked_add
         self.beepers += 1;
+
+        true
     }
 
     #[allow(dead_code)]
-    pub fn remove_beeper(&mut self) {
+    pub fn remove_beeper(&mut self) -> bool {
         // This needs to be rewritten using checked_sub
         self.beepers -= 1;
+
+        true
     }
 
-    pub fn turn_left(&mut self) {
+    pub fn turn_left(&mut self) -> bool {
         self.orientation = match self.orientation {
             Orientation::North => Orientation::West,
             Orientation::East => Orientation::North,
             Orientation::South => Orientation::East,
             Orientation::West => Orientation::South,
-        }
+        };
+
+        true
     }
 
     pub fn info(&self) -> (Position, Orientation, Size) {

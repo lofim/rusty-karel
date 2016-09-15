@@ -23,7 +23,6 @@ pub struct World {
 
 impl World {
     pub fn new(width: Size, heigth: Size, karel: Robot, tiles: Vec<Tile>) -> World {
-
         World {
             heigth: width,
             width: heigth,

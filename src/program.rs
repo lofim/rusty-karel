@@ -1,4 +1,6 @@
-use helpers::Size;
+use world::World;
+
+use std::{thread, time};
 
 #[derive(Clone, Debug)]
 pub enum CommandType {
@@ -8,20 +10,57 @@ pub enum CommandType {
     PutBeeper,
 }
 
+#[derive(Clone, Debug)] 
+pub enum CommandError {
+    CommandError(CommandType),
+}
+
+#[derive(Debug)]
 pub struct Program {
     commands: Vec<CommandType>,
-    counter: Size,
 }
 
 impl Program {
     pub fn new(commands: Vec<CommandType>) -> Program {
         Program { 
-            commands: Vec::new(),
-            counter: 0,
+            commands: commands,
         }
     }
 
-    pub fn execute(&mut self) {
-        // TODO: impl
+    pub fn start(&self, world: &mut World) {
+        println!("Executing program...");
+        self.render(world);
+
+        for command in self.commands.iter() {
+            // set timer
+            let ten_millis = time::Duration::from_millis(1000);
+            thread::sleep(ten_millis);
+
+            self.execute(command, world);
+            self.render(world);
+        }
+
+        println!("Program execution done.");
+    }
+
+    fn render(&self, world: &mut World) {
+        println!("karel info {:?}", world.get_robot().info());
+        println!("tiles {}", world.render());
+    }
+
+    fn execute(&self, command: &CommandType , world: &mut World) -> Result<(), CommandError> {
+        let owned_command = command.to_owned();
+        
+        let command_successful = match owned_command {
+            CommandType::Move => world.move_robot(),
+            CommandType::TurnLeft => world.get_robot().turn_left(),
+            _ => false,
+        };
+
+        if !command_successful {
+            return Err(CommandError::CommandError(owned_command));
+        }
+
+        Ok(())
     }
 }

@@ -1,9 +1,12 @@
 use world::Tile;
+use world::World;
 
 use robot::Orientation;
 use robot::Robot;
 
 use helpers::Position;
+
+use world_builder::WorldBuilder;
 
 /* 
     TODO: implement config parse error type
@@ -12,6 +15,10 @@ use helpers::Position;
         - error parsing karel, 
         - error parsing world 
 */
+
+/*
+    TODO: remove parse line boilerplate with macro perhaps?
+ */
 
 /*
     TODO: explore RUST regex parsing capabilities
@@ -29,7 +36,7 @@ fn parse_orientation(token: &str) -> Result<Orientation, String> {
         .map_err(|_| "Expecting string describing orientation".to_string())
 }
 
-pub fn parse_size_line(line: &str) -> Result<(u32, u32), String> {
+fn parse_size_line(line: &str) -> Result<(u32, u32), String> {
     let mut line_tokens = line.split_whitespace();
     
     line_tokens.next(); // discard the first value - descriptor
@@ -47,7 +54,7 @@ pub fn parse_size_line(line: &str) -> Result<(u32, u32), String> {
     Ok((width, height))
 }
 
-pub fn parse_karel_line(line: &str) -> Result<Robot, String> {
+fn parse_karel_line(line: &str) -> Result<Robot, String> {
     let mut line_tokens = line.split_whitespace();
     
     line_tokens.next(); // discard the first value - descriptor
@@ -83,7 +90,7 @@ pub fn parse_karel_line(line: &str) -> Result<Robot, String> {
     Ok(Robot::new(Position::new(x, y), orientation, beepers))
 }
 
-pub fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
+fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
     let mut line_tokens = line.split_whitespace();
     
     line_tokens.next();
@@ -111,7 +118,7 @@ pub fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
     Ok((Position::new(x, y), beeper_tile))
 }
 
-pub fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
+fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
     let mut line_tokens = line.split_whitespace();
     
     line_tokens.next();
@@ -131,4 +138,36 @@ pub fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
     let wall_tile = Tile::Wall;
     
     Ok((Position::new(x, y), wall_tile))
+}
+
+pub fn parse_world(file_contents: &str) -> Result<World, String> {
+    let mut world_builder = WorldBuilder::new();
+
+    let lines = file_contents.lines();
+
+    // parsing config file - building world
+    for line in lines {
+        if line.starts_with("size") {
+            let (width, heigth) = parse_size_line(line).unwrap();
+            world_builder.dimensions(width, heigth);
+        }
+
+        if line.starts_with("karel") {
+            let karel = parse_karel_line(line).unwrap();
+            println!("karel stuf");
+            world_builder.karel(karel);
+        }
+
+        if line.starts_with("beeper") {
+            let (position, beeper) = parse_beeper_line(line).unwrap();
+            world_builder.tile(position, beeper);
+        }
+
+        if line.starts_with("wall") {
+            let (position, wall) = parse_wall_line(line).unwrap();
+            world_builder.tile(position, wall);
+        }
+    }
+
+    Ok(world_builder.build())
 }
