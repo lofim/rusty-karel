@@ -12,11 +12,17 @@ wall 2 4
 
 # Program commands
 
-TURN
-MOVE
-MOVE
-MOVE
-MOVE
-TURN
-MOVE
-MOVE
+turn
+move
+move
+put
+move
+pick
+move
+turn
+turn
+move
+move
+pick
+move
+move

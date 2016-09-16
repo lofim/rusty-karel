@@ -54,7 +54,8 @@ impl Program {
         let command_successful = match owned_command {
             CommandType::Move => world.move_robot(),
             CommandType::TurnLeft => world.get_robot().turn_left(),
-            _ => false,
+            CommandType::PickBeeper => world.pick_beeper(),
+            CommandType::PutBeeper => world.put_beeper(),
         };
 
         if !command_successful {

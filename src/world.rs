@@ -83,6 +83,49 @@ impl World {
         &mut self.karel
     }
 
+    pub fn pick_beeper(&mut self) -> bool {
+        let (position, _, _) = self.karel.info();
+        let index = compute_index(&position, self.width) as usize;
+
+        match self.tiles[index] {
+            Tile::Beepers(beepers) => Some(beepers),
+            _ => None,
+        }.map(|beepers| {
+            if beepers > 1 {
+                self.tiles[index] = Tile::Beepers(beepers - 1);
+                self.get_robot().add_beeper(); 
+                return true;
+            }
+
+            if beepers == 1 {
+                self.tiles[index] = Tile::Empty;
+                return true;
+            }
+
+            false
+        }).unwrap_or(false)
+    }
+
+    pub fn put_beeper(&mut self) -> bool {
+        let (position, _, _) = self.karel.info();
+        let index = compute_index(&position, self.width) as usize;
+
+        match self.tiles[index] {
+            Tile::Beepers(beepers) => Some(Tile::Beepers(beepers + 1)),
+            Tile::Empty => Some(Tile::Beepers(1)),
+            _ => None
+        }.map(|tile| {
+            let action_result = self.get_robot().remove_beeper();
+            
+            if action_result {
+                self.tiles[index] = tile;
+                return true
+            }
+
+            false
+        }).unwrap_or(false) 
+    }
+
     pub fn move_robot(&mut self) -> bool {
         let (karel_position, orientation, _) = self.karel.info();
         let (karel_x, karel_y) = karel_position.extract();

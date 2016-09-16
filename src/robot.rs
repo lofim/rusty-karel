@@ -47,7 +47,6 @@ impl Robot {
 
     #[allow(dead_code)]
     pub fn add_beeper(&mut self) -> bool{
-        // this need to be rewritten using checked_add
         self.beepers += 1;
 
         true
@@ -55,10 +54,12 @@ impl Robot {
 
     #[allow(dead_code)]
     pub fn remove_beeper(&mut self) -> bool {
-        // This needs to be rewritten using checked_sub
-        self.beepers -= 1;
+        if self.beepers > 0 {
+            self.beepers -= 1;
+            return true
+        }
 
-        true
+        false
     }
 
     pub fn turn_left(&mut self) -> bool {
