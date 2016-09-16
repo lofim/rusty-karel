@@ -99,6 +99,7 @@ impl World {
 
             if beepers == 1 {
                 self.tiles[index] = Tile::Empty;
+                self.get_robot().add_beeper();
                 return true;
             }
 
