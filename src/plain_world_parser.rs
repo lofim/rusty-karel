@@ -154,7 +154,6 @@ pub fn parse_world(file_contents: &str) -> Result<World, String> {
 
         if line.starts_with("karel") {
             let karel = parse_karel_line(line).unwrap();
-            println!("karel stuf");
             world_builder.karel(karel);
         }
 

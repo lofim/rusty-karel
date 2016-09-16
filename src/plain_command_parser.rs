@@ -6,7 +6,6 @@ pub fn parse_program(program_contents: &str) -> Result<Program, String>{
     let mut commands: Vec<CommandType> = vec![];
 
     for line in lines {
-
         match parse_command_line(line) {
             Some(command) => commands.push(command),
             None => ()
