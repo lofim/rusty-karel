@@ -1,15 +1,12 @@
 use program::Program;
 use program::CommandType;
 
-pub fn parse_program(program_contents: &str) -> Result<Program, String>{
+pub fn parse_program(program_contents: &str) -> Result<Program, String> {
     let lines = program_contents.lines();
-    let mut commands: Vec<CommandType> = vec![];
+    let commands = lines.filter_map(parse_command_line).collect::<Vec<CommandType>>();
 
-    for line in lines {
-        match parse_command_line(line) {
-            Some(command) => commands.push(command),
-            None => ()
-        }
+    if commands.is_empty() {
+        return Err("Program does not contains any valid commands!".to_owned());
     }
 
     Ok(Program::new(commands))
