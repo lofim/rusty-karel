@@ -25,7 +25,7 @@ impl WorldBuilder {
         }
     }
 
-    pub fn dimensions<'a>(&'a mut self, width: Size, heigth: Size) -> &'a mut WorldBuilder {
+    pub fn dimensions(&mut self, width: Size, heigth: Size) -> &mut WorldBuilder {
         self.heigth = heigth;
         self.width = width;
 
@@ -34,13 +34,13 @@ impl WorldBuilder {
         self
     }
 
-    pub fn karel<'a>(&'a mut self, karel: Robot) -> &'a mut WorldBuilder {
+    pub fn karel(&mut self, karel: Robot) -> &mut WorldBuilder {
         self.karel = Some(karel);
 
         self
     }
 
-    pub fn tile<'a>(&'a mut self, position: Position, tile: Tile) -> &'a mut WorldBuilder {
+    pub fn tile(&mut self, position: Position, tile: Tile) -> &mut WorldBuilder {
         let tile_index = compute_index(&position, self.width) as usize;
 
         // handle the loaded content colision here

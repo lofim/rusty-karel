@@ -157,14 +157,13 @@ impl World {
         let new_position_index = compute_index(&new_position, self.width);
 
         // check for not running into wall
-        match self.tiles[new_position_index as usize] {
-            Tile::Wall => return false,
-            _ => ()
+        if let Tile::Wall = self.tiles[new_position_index as usize] {
+            return false;
         }
 
         // move karel
         self.karel.set_position(new_position);
 
-        return true;
+        true
     }
 }

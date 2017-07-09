@@ -31,12 +31,14 @@ impl Program {
         println!("Executing program...");
         self.render(world);
 
-        for command in self.commands.iter() {
+        for command in &self.commands {
             // set timer
             let ten_millis = time::Duration::from_millis(1000);
             thread::sleep(ten_millis);
 
-            self.execute(command, world);
+            if let Err(err) = self.execute(command, world) {
+                println!("There was an error in program execution {:?}", err);
+            }
             self.render(world);
         }
 

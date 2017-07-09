@@ -43,12 +43,12 @@ fn parse_size_line(line: &str) -> Result<(u32, u32), String> {
     
     let width = try!(
         line_tokens.next()
-            .ok_or("Error parsing world width".to_string())
+            .ok_or_else(|| "Error parsing world width".to_string())
             .and_then(parse_integer));
     
     let height = try!(
         line_tokens.next()
-            .ok_or("Error parsing world height".to_string())
+            .ok_or_else(|| "Error parsing world height".to_string())
             .and_then(parse_integer));
     
     Ok((width, height))
@@ -65,25 +65,25 @@ fn parse_karel_line(line: &str) -> Result<Robot, String> {
     // removing the biolerplate with a macro 
     let x = try!(
         line_tokens.next()
-            .ok_or("Error parsing karel's x position".to_string())
+            .ok_or_else(|| "Error parsing karel's x position".to_string())
             .and_then(parse_integer)
     );
             
     let y = try!(
         line_tokens.next()
-            .ok_or("Error parsing karel's y position".to_string())
+            .ok_or_else(|| "Error parsing karel's y position".to_string())
             .and_then(parse_integer)
     );
     
     let orientation = try!(
         line_tokens.next()
-            .ok_or("Error parsing karel's orientation".to_string())
+            .ok_or_else(|| "Error parsing karel's orientation".to_string())
             .and_then(parse_orientation)
     );
     
     let beepers = try!(
         line_tokens.next()
-            .ok_or("Error parsing karel's beepers".to_string())
+            .ok_or_else(|| "Error parsing karel's beepers".to_string())
             .and_then(parse_integer)
     );
     
@@ -97,19 +97,19 @@ fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
     
     let x = try!(
         line_tokens.next()
-            .ok_or("Error parsing beeper's x position".to_string())
+            .ok_or_else(|| "Error parsing beeper's x position".to_string())
             .and_then(parse_integer)
     );
             
     let y = try!(
         line_tokens.next()
-            .ok_or("Error parsing beeper's y position".to_string())
+            .ok_or_else(|| "Error parsing beeper's y position".to_string())
             .and_then(parse_integer)
     );
     
     let quantity = try!(
         line_tokens.next()
-            .ok_or("Error parsing beeper's quantity".to_string())
+            .ok_or_else(|| "Error parsing beeper's quantity".to_string())
             .and_then(parse_integer)
     );
     
@@ -125,13 +125,13 @@ fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
     
     let x = try!(
         line_tokens.next()
-            .ok_or("Error parsing wall's x position".to_string())
+            .ok_or_else(|| "Error parsing wall's x position".to_string())
             .and_then(parse_integer)
     );
             
     let y = try!(
         line_tokens.next()
-            .ok_or("Error parsing wall's y position".to_string())
+            .ok_or_else(|| "Error parsing wall's y position".to_string())
             .and_then(parse_integer)
     );
     
