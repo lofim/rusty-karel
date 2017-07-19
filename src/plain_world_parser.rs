@@ -41,15 +41,13 @@ fn parse_size_line(line: &str) -> Result<(u32, u32), String> {
     
     line_tokens.next(); // discard the first value - descriptor
     
-    let width = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing world width".to_string())
-            .and_then(parse_integer));
+    let width = line_tokens.next()
+        .ok_or_else(|| "Error parsing world width".to_string())
+        .and_then(parse_integer)?;
     
-    let height = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing world height".to_string())
-            .and_then(parse_integer));
+    let height = line_tokens.next()
+        .ok_or_else(|| "Error parsing world height".to_string())
+        .and_then(parse_integer)?;
     
     Ok((width, height))
 }
@@ -63,29 +61,21 @@ fn parse_karel_line(line: &str) -> Result<Robot, String> {
     
     // repetition is definitely not ok - explore posibilities of
     // removing the biolerplate with a macro 
-    let x = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing karel's x position".to_string())
-            .and_then(parse_integer)
-    );
+    let x = line_tokens.next()
+        .ok_or_else(|| "Error parsing karel's x position".to_string())
+        .and_then(parse_integer)?;
             
-    let y = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing karel's y position".to_string())
-            .and_then(parse_integer)
-    );
+    let y = line_tokens.next()
+        .ok_or_else(|| "Error parsing karel's y position".to_string())
+        .and_then(parse_integer)?;
     
-    let orientation = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing karel's orientation".to_string())
-            .and_then(parse_orientation)
-    );
+    let orientation = line_tokens.next()
+        .ok_or_else(|| "Error parsing karel's orientation".to_string())
+        .and_then(parse_orientation)?;
     
-    let beepers = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing karel's beepers".to_string())
-            .and_then(parse_integer)
-    );
+    let beepers = line_tokens.next()
+        .ok_or_else(|| "Error parsing karel's beepers".to_string())
+        .and_then(parse_integer)?;
     
     Ok(Robot::new(Position::new(x, y), orientation, beepers))
 }
@@ -95,23 +85,17 @@ fn parse_beeper_line(line: &str) -> Result<(Position, Tile), String> {
     
     line_tokens.next();
     
-    let x = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing beeper's x position".to_string())
-            .and_then(parse_integer)
-    );
-            
-    let y = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing beeper's y position".to_string())
-            .and_then(parse_integer)
-    );
+    let x = line_tokens.next()
+        .ok_or_else(|| "Error parsing beeper's x position".to_string())
+        .and_then(parse_integer)?;
+
+    let y = line_tokens.next()
+        .ok_or_else(|| "Error parsing beeper's y position".to_string())
+        .and_then(parse_integer)?;
     
-    let quantity = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing beeper's quantity".to_string())
-            .and_then(parse_integer)
-    );
+    let quantity = line_tokens.next()
+        .ok_or_else(|| "Error parsing beeper's quantity".to_string())
+        .and_then(parse_integer)?;
     
     let beeper_tile = Tile::Beepers(quantity);
     
@@ -123,18 +107,14 @@ fn parse_wall_line(line: &str) -> Result<(Position, Tile), String> {
     
     line_tokens.next();
     
-    let x = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing wall's x position".to_string())
-            .and_then(parse_integer)
-    );
-            
-    let y = try!(
-        line_tokens.next()
-            .ok_or_else(|| "Error parsing wall's y position".to_string())
-            .and_then(parse_integer)
-    );
-    
+    let x = line_tokens.next()
+        .ok_or_else(|| "Error parsing wall's x position".to_string())
+        .and_then(parse_integer)?;
+
+    let y = line_tokens.next()
+        .ok_or_else(|| "Error parsing wall's y position".to_string())
+        .and_then(parse_integer)?;
+
     let wall_tile = Tile::Wall;
     
     Ok((Position::new(x, y), wall_tile))

@@ -46,10 +46,10 @@ pub fn compute_index(position: &Position, width: Size) -> Size {
 }
 
 pub fn load_file(file_name: &str) -> io::Result<String> {
-    let mut file = try!(File::open(file_name));
+    let mut file = File::open(file_name)?;
 
     let mut contents = String::new();
-    try!(file.read_to_string(&mut contents));
+    file.read_to_string(&mut contents)?;
 
     Ok(contents)
 }

@@ -3,7 +3,9 @@ use program::CommandType;
 
 pub fn parse_program(program_contents: &str) -> Result<Program, String> {
     let lines = program_contents.lines();
-    let commands = lines.filter_map(parse_command_line).collect::<Vec<CommandType>>();
+    let commands = lines
+        .filter_map(parse_command_line)
+        .collect::<Vec<CommandType>>();
 
     if commands.is_empty() {
         return Err("Program does not contains any valid commands!".to_owned());
