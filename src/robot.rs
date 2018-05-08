@@ -34,9 +34,9 @@ pub struct Robot {
 impl Robot {
     pub fn new(position: Position, orientation: Orientation, beepers: Size) -> Robot {
         Robot {
-            position: position,
-            orientation: orientation,
-            beepers: beepers
+            position,
+            orientation,
+            beepers,
         }
     }
 

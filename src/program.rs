@@ -23,7 +23,7 @@ pub struct Program {
 impl Program {
     pub fn new(commands: Vec<CommandType>) -> Program {
         Program { 
-            commands: commands,
+            commands,
         }
     }
 

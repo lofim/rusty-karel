@@ -1,4 +1,4 @@
-[root]
+[[package]]
 name = "rusty-karel"
 version = "0.1.0"
 

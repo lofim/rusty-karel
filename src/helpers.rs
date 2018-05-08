@@ -14,7 +14,7 @@ pub struct Position {
 
 impl Position {
     pub fn new(x: Size, y: Size) -> Position {
-        Position{x: x, y: y}
+        Position{x, y}
     }
 
     #[allow(dead_code)]
