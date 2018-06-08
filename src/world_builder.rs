@@ -1,9 +1,9 @@
-use world::World;
 use world::Tile;
+use world::World;
 
-use helpers::Size;
 use helpers::compute_index;
 use helpers::Position;
+use helpers::Size;
 
 use robot::Robot;
 
@@ -12,7 +12,7 @@ pub struct WorldBuilder {
     karel: Option<Robot>,
     heigth: Size,
     width: Size,
-    tiles: Vec<Tile>
+    tiles: Vec<Tile>,
 }
 
 impl WorldBuilder {
@@ -21,7 +21,7 @@ impl WorldBuilder {
             karel: None,
             width: 0,
             heigth: 0,
-            tiles: Vec::new()
+            tiles: Vec::new(),
         }
     }
 

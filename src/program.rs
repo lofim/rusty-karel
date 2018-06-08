@@ -10,7 +10,7 @@ pub enum CommandType {
     PutBeeper,
 }
 
-#[derive(Clone, Debug)] 
+#[derive(Clone, Debug)]
 pub enum CommandError {
     CommandError(CommandType),
 }
@@ -22,9 +22,7 @@ pub struct Program {
 
 impl Program {
     pub fn new(commands: Vec<CommandType>) -> Program {
-        Program { 
-            commands,
-        }
+        Program { commands }
     }
 
     pub fn start(&self, world: &mut World) {
@@ -50,9 +48,9 @@ impl Program {
         println!("tiles {}", world.render());
     }
 
-    fn execute(&self, command: &CommandType , world: &mut World) -> Result<(), CommandError> {
+    fn execute(&self, command: &CommandType, world: &mut World) -> Result<(), CommandError> {
         let owned_command = command.to_owned();
-        
+
         let command_successful = match owned_command {
             CommandType::Move => world.move_robot(),
             CommandType::TurnLeft => world.get_robot().turn_left(),

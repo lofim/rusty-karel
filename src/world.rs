@@ -1,6 +1,6 @@
-use helpers::Size;
 use helpers::compute_index;
 use helpers::Position;
+use helpers::Size;
 
 use robot::Orientation;
 use robot::Robot;
@@ -11,14 +11,14 @@ pub enum Tile {
     Empty,
     Wall,
     Beepers(Size),
-    Robot(Orientation)
+    Robot(Orientation),
 }
 
 pub struct World {
     karel: Robot,
     heigth: Size,
     width: Size,
-    tiles: Vec<Tile>
+    tiles: Vec<Tile>,
 }
 
 impl World {
@@ -36,7 +36,7 @@ impl World {
         let mut rendered_world = String::new();
 
         for (index, tile) in tiles_projection.iter().enumerate() {
-            if index as u32  % self.width == 0 {
+            if index as u32 % self.width == 0 {
                 rendered_world.push_str("\n");
             }
 
@@ -93,7 +93,7 @@ impl World {
         }.map(|beepers| {
             if beepers > 1 {
                 self.tiles[index] = Tile::Beepers(beepers - 1);
-                self.get_robot().add_beeper(); 
+                self.get_robot().add_beeper();
                 return true;
             }
 
@@ -104,7 +104,8 @@ impl World {
             }
 
             false
-        }).unwrap_or(false)
+        })
+            .unwrap_or(false)
     }
 
     pub fn put_beeper(&mut self) -> bool {
@@ -114,17 +115,18 @@ impl World {
         match self.tiles[index] {
             Tile::Beepers(beepers) => Some(Tile::Beepers(beepers + 1)),
             Tile::Empty => Some(Tile::Beepers(1)),
-            _ => None
+            _ => None,
         }.map(|tile| {
             let action_result = self.get_robot().remove_beeper();
-            
+
             if action_result {
                 self.tiles[index] = tile;
-                return true
+                return true;
             }
 
             false
-        }).unwrap_or(false) 
+        })
+            .unwrap_or(false)
     }
 
     pub fn move_robot(&mut self) -> bool {
@@ -141,12 +143,12 @@ impl World {
         // check  if not moving out of world bounds
         let new_x = match new_option_x {
             Some(x) => x,
-            None => self.width + 1 // put out of bound
+            None => self.width + 1, // put out of bound
         };
 
         let new_y = match new_option_y {
             Some(y) => y,
-            None => self.width + 1 // put out of bound
+            None => self.width + 1, // put out of bound
         };
 
         if new_x >= self.width || new_y >= self.heigth {

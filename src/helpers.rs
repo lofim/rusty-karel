@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::io;
 use std::fs::File;
+use std::io;
+use std::io::prelude::*;
 
 // Type alias for World size and quantity types
 pub type Size = u32;
@@ -14,7 +14,7 @@ pub struct Position {
 
 impl Position {
     pub fn new(x: Size, y: Size) -> Position {
-        Position{x, y}
+        Position { x, y }
     }
 
     #[allow(dead_code)]

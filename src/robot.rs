@@ -1,5 +1,5 @@
-use helpers::Size;
 use helpers::Position;
+use helpers::Size;
 
 use std::str::FromStr;
 
@@ -46,7 +46,7 @@ impl Robot {
     }
 
     #[allow(dead_code)]
-    pub fn add_beeper(&mut self) -> bool{
+    pub fn add_beeper(&mut self) -> bool {
         self.beepers += 1;
 
         true
@@ -56,7 +56,7 @@ impl Robot {
     pub fn remove_beeper(&mut self) -> bool {
         if self.beepers > 0 {
             self.beepers -= 1;
-            return true
+            return true;
         }
 
         false

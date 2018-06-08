@@ -3,12 +3,12 @@ mod robot;
 mod world;
 mod world_builder;
 
-mod plain_world_parser;
 mod plain_command_parser;
+mod plain_world_parser;
 mod program;
 
-use plain_world_parser::parse_world;
 use plain_command_parser::parse_program;
+use plain_world_parser::parse_world;
 
 use helpers::load_file;
 
