@@ -41,23 +41,23 @@ impl World {
             }
 
             rendered_world.push_str(" ");
-            rendered_world.push_str(&self.render_tile(tile));
+            rendered_world.push_str(self.render_tile(*tile).as_str());
         }
 
         rendered_world
     }
 
-    fn render_tile(&self, tile: &Tile) -> String {
-        match *tile {
+    fn render_tile(&self, tile: Tile) -> String {
+        match tile {
             Tile::Empty => ".".to_string(),
             Tile::Wall => "W".to_string(),
             Tile::Beepers(_) => "*".to_string(),
-            Tile::Robot(ref orientation) => self.render_orientation(orientation),
+            Tile::Robot(orientation) => self.render_orientation(orientation),
         }
     }
 
-    fn render_orientation(&self, orientation: &Orientation) -> String {
-        match *orientation {
+    fn render_orientation(&self, orientation: Orientation) -> String {
+        match orientation {
             Orientation::North => "^".to_string(),
             Orientation::East => ">".to_string(),
             Orientation::South => "v".to_string(),
@@ -67,7 +67,7 @@ impl World {
 
     fn project_robot(&self) -> Vec<Tile> {
         let (position, orientation, _) = self.karel.info();
-        let index = compute_index(&position, self.width) as usize;
+        let index = compute_index(position, self.width) as usize;
         let mut tiles_projection = self.tiles.clone();
 
         tiles_projection[index] = Tile::Robot(orientation);
@@ -85,7 +85,7 @@ impl World {
 
     pub fn pick_beeper(&mut self) -> bool {
         let (position, _, _) = self.karel.info();
-        let index = compute_index(&position, self.width) as usize;
+        let index = compute_index(position, self.width) as usize;
 
         match self.tiles[index] {
             Tile::Beepers(beepers) => Some(beepers),
@@ -110,7 +110,7 @@ impl World {
 
     pub fn put_beeper(&mut self) -> bool {
         let (position, _, _) = self.karel.info();
-        let index = compute_index(&position, self.width) as usize;
+        let index = compute_index(position, self.width) as usize;
 
         match self.tiles[index] {
             Tile::Beepers(beepers) => Some(Tile::Beepers(beepers + 1)),
@@ -156,7 +156,7 @@ impl World {
         }
 
         let new_position = Position::new(new_x, new_y);
-        let new_position_index = compute_index(&new_position, self.width);
+        let new_position_index = compute_index(new_position, self.width);
 
         // check for not running into wall
         if let Tile::Wall = self.tiles[new_position_index as usize] {

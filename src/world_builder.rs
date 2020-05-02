@@ -41,7 +41,7 @@ impl WorldBuilder {
     }
 
     pub fn tile(&mut self, position: Position, tile: Tile) -> &mut WorldBuilder {
-        let tile_index = compute_index(&position, self.width) as usize;
+        let tile_index = compute_index(position, self.width) as usize;
 
         // handle the loaded content colision here
         self.tiles[tile_index] = tile;

@@ -18,7 +18,7 @@ impl Position {
     }
 
     #[allow(dead_code)]
-    pub fn extract(&self) -> (Size, Size) {
+    pub fn extract(self) -> (Size, Size) {
         (self.x, self.y)
     }
 }
@@ -41,8 +41,8 @@ impl Position {
     11 = 2 * 5 + 1
 */
 
-pub fn compute_index(position: &Position, width: Size) -> Size {
-    (position.y * width + position.x)
+pub fn compute_index(position: Position, width: Size) -> Size {
+    position.y * width + position.x
 }
 
 pub fn load_file(file_name: &str) -> io::Result<String> {
