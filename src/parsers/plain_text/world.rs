@@ -1,12 +1,12 @@
-use world::Tile;
-use world::World;
+use crate::world::Tile;
+use crate::world::World;
 
-use robot::Orientation;
-use robot::Robot;
+use crate::robot::Orientation;
+use crate::robot::Robot;
 
-use helpers::Position;
+use crate::helpers::Position;
 
-use world_builder::WorldBuilder;
+use crate::world_builder::WorldBuilder;
 
 /* 
     TODO: implement config parse error type

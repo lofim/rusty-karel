@@ -1,9 +1,9 @@
-use helpers::compute_index;
-use helpers::Position;
-use helpers::Size;
+use crate::helpers::compute_index;
+use crate::helpers::Position;
+use crate::helpers::Size;
 
-use robot::Orientation;
-use robot::Robot;
+use crate::robot::Orientation;
+use crate::robot::Robot;
 
 // World definition
 #[derive(Clone, Copy)]

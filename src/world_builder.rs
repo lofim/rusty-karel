@@ -1,11 +1,11 @@
-use world::Tile;
-use world::World;
+use crate::world::Tile;
+use crate::world::World;
 
-use helpers::compute_index;
-use helpers::Position;
-use helpers::Size;
+use crate::helpers::compute_index;
+use crate::helpers::Position;
+use crate::helpers::Size;
 
-use robot::Robot;
+use crate::robot::Robot;
 
 // World builder
 pub struct WorldBuilder {

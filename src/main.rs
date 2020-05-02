@@ -1,16 +1,14 @@
 mod helpers;
-mod robot;
-mod world;
-mod world_builder;
-
-mod plain_command_parser;
-mod plain_world_parser;
+mod parsers;
 mod program;
+mod robot;
+mod world_builder;
+mod world;
 
-use plain_command_parser::parse_program;
-use plain_world_parser::parse_world;
+use crate::parsers::plain_text::command::parse_program;
+use crate::parsers::plain_text::world::parse_world;
 
-use helpers::load_file;
+use crate::helpers::load_file;
 
 fn main() {
     let world_config = load_file("world.kr").unwrap();

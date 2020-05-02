@@ -1,4 +1,4 @@
-use world::World;
+use crate::world::World;
 
 use std::{thread, time};
 

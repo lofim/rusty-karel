@@ -1,5 +1,5 @@
-use program::CommandType;
-use program::Program;
+use crate::program::CommandType;
+use crate::program::Program;
 
 pub fn parse_program(program_contents: &str) -> Result<Program, String> {
     let lines = program_contents.lines();
