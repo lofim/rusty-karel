@@ -26,26 +26,47 @@ impl Program {
     }
 
     pub fn start(&self, world: &mut World) {
-        println!("Executing program...");
+        let one_second = time::Duration::from_secs(1);
+        let five_seconds = time::Duration::from_secs(5);
+
+        self.clean_terminal();
+        self.render_start_info();
         self.render(world);
 
-        for command in &self.commands {
+        for (index, command) in self.commands.iter().enumerate() {
+            let step_number = index + 1;
             // set timer
-            let ten_millis = time::Duration::from_millis(1000);
-            thread::sleep(ten_millis);
+            thread::sleep(one_second);
 
             if let Err(err) = self.execute(command, world) {
-                println!("There was an error in program execution {:?}", err);
+                println!("There was an error in program execution on step {}, {:?}, continuing...", step_number, err);
+                thread::sleep(five_seconds);
+                continue;
             }
+
+            self.clean_terminal();
+            self.render_header(step_number);
             self.render(world);
         }
 
         println!("Program execution done.");
     }
 
+    fn render_start_info(&self) {
+        println!("Program loaded, executing...");
+    }
+
+    fn render_header(&self, step_number: usize) {
+        println!("Executing step {}", step_number);
+    }
+
     fn render(&self, world: &mut World) {
         println!("karel info {:?}", world.get_robot().info());
         println!("tiles {}", world.render());
+    }
+
+    fn clean_terminal(&self) {
+        print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
     }
 
     fn execute(&self, command: &CommandType, world: &mut World) -> Result<(), CommandError> {
