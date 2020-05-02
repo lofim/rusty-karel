@@ -34,18 +34,17 @@ impl Program {
         self.render(world);
 
         for (index, command) in self.commands.iter().enumerate() {
-            let step_number = index + 1;
+            let command_number = index + 1;
             // set timer
             thread::sleep(one_second);
+            self.clean_terminal();
 
             if let Err(err) = self.execute(command, world) {
-                println!("There was an error in program execution on step {}, {:?}, continuing...", step_number, err);
+                println!("There was an error in program execution on command {}, {:?}, continuing...", command_number, err);
                 thread::sleep(five_seconds);
-                continue;
             }
 
-            self.clean_terminal();
-            self.render_header(step_number);
+            self.render_header(command_number, command);
             self.render(world);
         }
 
@@ -56,8 +55,8 @@ impl Program {
         println!("Program loaded, executing...");
     }
 
-    fn render_header(&self, step_number: usize) {
-        println!("Executing step {}", step_number);
+    fn render_header(&self, command_number: usize, command: &CommandType) {
+        println!("Executed command {}: {:?}", command_number, &command);
     }
 
     fn render(&self, world: &mut World) {
